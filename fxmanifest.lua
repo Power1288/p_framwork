@@ -26,7 +26,8 @@ client_script {
     "client/main.lua",
     "client/player/inventory.lua",
     "client/player/money.lua",
-    "interface/intHud.lua"
+    "interface/intHud.lua",
+    "client/player/jobs.lua"
 }
 
 server_script {
@@ -35,6 +36,7 @@ server_script {
     "server/fonction.lua",
     "server/command/command.lua",
     "server/player/inventory.lua",
-    "server/player/money.lua"
+    "server/player/money.lua",
+    "server/player/jobs.lua"
 
 }
