@@ -1,0 +1,34 @@
+* {
+    background-color: transparent;
+}
+
+.hud {
+    border: 1px solid red;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.bank-img , .liq-imh {
+    font-size: 30px;
+    color: green;
+}
+
+.info-bank {
+ position: absolute;
+ top: 0;
+ left: 50px;
+ font-size: 20px;
+ line-height: 10px;
+ -webkit-user-select: none;
+}
+.info-liq {
+ position: absolute;
+ top: 30px;
+ left: 50px;
+ font-size: 20px;
+ line-height: 10px;
+ -webkit-user-select: none;
+
+}
