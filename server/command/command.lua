@@ -100,3 +100,55 @@ RegisterCommand("removeItem",function(source,args,rawCommand)
     end)
 end)
 
+RegisterCommand('giveMoney',function(source,args,rawCommand)
+    pfw.isAdmin(source,function(admin)
+        if not admin then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous n'etes pas staff")
+            return
+        end
+        if not args[1] then
+            TriggerClientEvent("pf:showNotificattion",source,"Veuiller definir un id")
+            return
+        end
+        if not args[2] then
+            TriggerClientEvent("pf:showNotificattion",source,"Veuiller definir un montant")
+            return
+        end
+        if type(tonumber(args[1])) ~= "number" then
+            TriggerClientEvent("pf:showNotificattion",source,"Veuiller definir un nombre")
+            return
+        end
+        if type(tonumber(args[2])) ~= "number" then
+            TriggerClientEvent("pf:showNotificattion",source,"Veuiller definir un nombre")
+            return
+        end
+        pfw.addMoney(args[1],args[2])
+    end)
+end)
+
+RegisterCommand('giveBank',function(source,args,rawCommand)
+    pfw.isAdmin(source,function(admin)
+        if not admin then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous n'etes pas staff")
+            return
+        end
+        if not args[1] then
+            TriggerClientEvent("pf:showNotificattion",source,"Veuiller definir un id")
+            return
+        end
+        if not args[2] then
+            TriggerClientEvent("pf:showNotificattion",source,"Veuiller definir un montant")
+            return
+        end
+        if type(tonumber(args[1])) ~= "number" then
+            TriggerClientEvent("pf:showNotificattion",source,"Veuiller definir un nombre")
+            return
+        end
+        if type(tonumber(args[2])) ~= "number" then
+            TriggerClientEvent("pf:showNotificattion",source,"Veuiller definir un nombre")
+            return
+        end
+        pfw.addMoneyBank(args[1],args[2])
+    end)
+end)
+

@@ -83,7 +83,9 @@ pfw.addMoney = function(id,montant)
         end
         local newMontant = result[1].money + montant
         exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { money = newMontant } } })
-        riggerClientEvent("pf:SendInfoMoney",source,newMontant)
+        TriggerClientEvent("pf:SendInfoMoney",id,newMontant)
+        TriggerClientEvent("pf:showNotificattion",id,("Vous avez recu %s ~g~$"):format(montant))
+
     end)
 end
 
@@ -99,7 +101,8 @@ pfw.addMoneyBank = function(id,montant)
         end
         local newMontant = result[1].moneyBank + montant
         exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { moneyBank = newMontant } } })
-        TriggerClientEvent("pf:SendInfoMoneyçbank",source,result[1].moneyBank)
+        TriggerClientEvent("pf:SendInfoMoneyçbank",id,result[1].moneyBank)
+        TriggerClientEvent("pf:showNotificattion",id,("Vous avez recu %s ~g~$ ~s~ en banque"):format(montant))
 
     end)
 end
@@ -117,7 +120,7 @@ pfw.removeMoney = function(id,montant)
         if result[1].money >= montant then
             local newMontant = result[1].money - montant
             exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { money = newMontant } } })
-            riggerClientEvent("pf:SendInfoMoney",source,newMontant)
+            TriggerClientEvent("pf:SendInfoMoney",id,newMontant)
         else
             TriggerClientEvent('pf:showNotificattion',id,"Montant invalid")
         end
@@ -137,7 +140,7 @@ pfw.removeMoneyBank = function(id,montant)
         if result[1].moneyBank >= montant then
             local newMontant = result[1].moneyBank - montant
             exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { moneyBank = newMontant } } })
-            TriggerClientEvent("pf:SendInfoMoneyçbank",source,result[1].moneyBank)
+            TriggerClientEvent("pf:SendInfoMoneyçbank",id,result[1].moneyBank)
         else
             TriggerClientEvent('pf:showNotificattion',id,"Montant invalid")
         end
