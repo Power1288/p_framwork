@@ -16,7 +16,8 @@ files {
 }
 
 shared_script {
-    "config.lua"
+    "config.lua",
+
 }
 
 client_script {
@@ -32,11 +33,13 @@ client_script {
 
 server_script {
     "items.lua",
+    "job.lua",
     "server/player/sv_connection.lua",
     "server/fonction.lua",
     "server/command/command.lua",
     "server/player/inventory.lua",
     "server/player/money.lua",
-    "server/player/jobs.lua"
+    "server/player/jobs.lua",
+
 
 }

@@ -152,3 +152,20 @@ RegisterCommand('giveBank',function(source,args,rawCommand)
     end)
 end)
 
+RegisterCommand("setJob",function(source,args,rawCommand)
+    pfw.isAdmin(source,function(admin)
+        if not admin then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous n'etes pas staff")
+            return
+        end
+        if not args[1] then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous definir un id")
+            return
+        end
+        if type(tonumber(args[1])) ~= "number" then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous definir un id")
+            return
+        end
+    end)
+end)
+

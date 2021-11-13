@@ -11,6 +11,9 @@ pfw.getItem = function()
     return Item
 end
 
+pfw.getJob = function()
+    return jobs
+end
 
 pfw.isAdmin = function(id,cb)
     local admin = false
