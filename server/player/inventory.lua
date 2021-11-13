@@ -65,15 +65,12 @@ function pfw.addItem(id,itemName,count)
         local itemInv = result[1].item
         for a,b in pairs(itemInv)do
             if b.name == itemName then
-                print(json.encode(itemInv))
                 b.count = b.count + count
-                print(json.encode(itemInv))
                 exports.mongodb:updateOne({ collection="users_inventory", query = { identifier = GetPlayerIdentifier(id)}, update = { ["$set"] = { item = itemInv } } })
                 return
             end
         end
         for _,c in pairs(result)do
-            print(json.encode(c.item))
             itemTable = c.item
         end
         table.insert(itemTable,{name = item.name,label = item.label , weight = item.weight, usable = item.usable ,count = count})

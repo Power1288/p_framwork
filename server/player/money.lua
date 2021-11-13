@@ -43,7 +43,7 @@ AddEventHandler("pf:getMoneyInfo",function()
     end)
 end)
 
-pfw.getMoney = function(id)
+pfw.getMoney = function(id,cb)
     exports.mongodb:findOne({ collection="users_infos", query = { identifier = GetPlayerIdentifier(id) } }, function (success, result)
         if not success then
             print("[MongoDB][Example] Error de recherche infos users: "..tostring(result))
@@ -53,8 +53,8 @@ pfw.getMoney = function(id)
             print("[utilisateur] introuvable")
             return
         end
+        cb(result[1].money)
     end)
-    return result[1].money
 end
 
 pfw.getMoneyBank = function(id,cb)
@@ -146,4 +146,3 @@ pfw.removeMoneyBank = function(id,montant)
         end
     end)
 end
-

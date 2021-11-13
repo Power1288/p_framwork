@@ -11,6 +11,18 @@ pfw.showNotification = function(msg)
     DrawNotification(0,1)
 end
 
+pfw.ShowHelpNotification = function(msg, thisFrame, beep, duration)
+    AddTextEntry('esxHelpNotification', msg)
+
+    if thisFrame then
+        DisplayHelpTextThisFrame('esxHelpNotification', false)
+    else
+        if beep == nil then beep = true end
+        BeginTextCommandDisplayHelp('esxHelpNotification')
+        EndTextCommandDisplayHelp(0, false, beep, duration or -1)
+    end
+end
+
 pfw.Keyboard = function(TextEntry, ExampleText, MaxStringLength)
     AddTextEntry('FMMC_KEY_TIP1', TextEntry .. ':')
     DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP1", "", ExampleText, "", "", "", MaxStringLength)

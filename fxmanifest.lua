@@ -30,7 +30,7 @@ client_script {
 }
 
 server_script {
-    "server/item.lua",
+    "items.lua",
     "server/player/sv_connection.lua",
     "server/fonction.lua",
     "server/command/command.lua",

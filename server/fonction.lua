@@ -7,6 +7,10 @@
 pfw = {}
 
 
+pfw.getItem = function()
+    return Item
+end
+
 
 pfw.isAdmin = function(id,cb)
     local admin = false
@@ -57,7 +61,5 @@ end
 
 
 
-pfw.getItem = function()
-    return Item
-end
+
 
