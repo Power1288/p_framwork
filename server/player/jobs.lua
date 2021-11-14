@@ -191,7 +191,5 @@ pfw.getGangGrade = function(id,cb)
     end)
 end
 
-pfw.getEmployer = function(society)
 
-end
 

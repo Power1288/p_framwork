@@ -54,6 +54,8 @@ pfw.getSocietyMoney = function(society,cb)
     end)
 end
 
+
+
 pfw.depositMoneySociety = function(montant,society,source)
     exports.mongodb:findOne({ collection="society_infos", query = { name = society } }, function (success, result)
         if not success then
@@ -92,5 +94,25 @@ pfw.retireMoneySociety = function(montant,society,source)
     end)
 end
 
-
+pfw.getEmployer = function(society,cb)
+    local employer = {}
+    if not society then
+        print("ERREUR SOCIETER Invalide")
+        return
+    end
+    exports.mongodb:find({ collection="users_infos", query = { job = society } }, function (success, result)
+        if not success then
+            print("[MongoDB][Example] Error in findOne: "..tostring(result))
+            return
+        end
+        if not result[1] then
+            print("ERREUR Sociéter introuvable")
+            return
+        end
+        for k,v in pairs(result) do
+            table.insert(employer,{name = v.name , grade = v.grade})
+        end
+        cb(employer)
+    end)
+end
 

@@ -3,6 +3,10 @@
 --- Created by ll.
 --- DateTime: 14/11/2021 21:21
 ---
+---
+
+
+
 RegisterNetEvent("pf:setinfousers")
 AddEventHandler("pf:setinfousers",function()
     local source = source
@@ -135,5 +139,13 @@ AddEventHandler("setDefaultJob",function()
         end
         exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { job = "unemployed", grade = 0 } } })
         print("^2[MongoDb] Job crée avec succes")
+    end)
+end)
+
+RegisterNetEvent("pf:getEnployerSociety")
+AddEventHandler("pf:getEnployerSociety",function(society)
+    local source = source
+    pfw.getEmployer(society,function(employer)
+        TriggerClientEvent("pf:sendSocietyEmployer",source,employer)
     end)
 end)
