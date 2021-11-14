@@ -5,6 +5,11 @@
 ---
 
 jobs = {
+    ["unemployed"] = {
+        grade = {
+            [1] = "sans-emplois"
+        }
+    },
     ["police"] = {
         grade = {
             [1] = "cadet",

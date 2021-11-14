@@ -24,7 +24,7 @@ AddEventHandler("setDefaultJob",function()
 end)
 
 
-setJob = function(id,jobs,grade)
+pfw.setJob = function(id,jobs,grade)
     if not id then
         print("id invalid")
         return
@@ -73,6 +73,27 @@ setJob = function(id,jobs,grade)
 
         exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { job = job, grade = newGrade } } })
         print("^2[MongoDb] Job crée avec succes")
+        TriggerClientEvent("pf:showNotificattion",id,("Vous avez été setjob job: %s grade: %s"):format(job,newGrade))
+    end)
+end
+
+pfw.getjob = function(id,cb)
+    if not id then
+        print("id invalid")
+        return
+    end
+    exports.mongodb:findOne({collection="users_infos",query = {identifier = GetPlayerIdentifier(id)}},function(succes,result)
+        if not succes then
+            print("^2[ERROR] Recherche du job non succes")
+            return
+        end
+        if not result[1] then
+            return
+        end
+        if result[1].job then
+            print("^2[MongoDb] Job trouve avec succes")
+            cb(result[1].job)
+        end
     end)
 end
 
