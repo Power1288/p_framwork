@@ -36,7 +36,25 @@ pfw.createSociety = function(name,argDepart)
     end)
 end
 
-pfw.depositMoneySociety = function(montant,society)
+pfw.getSocietyMoney = function(society,cb)
+    if not society then
+        print("ERREUR SOCIETER Invalide")
+        return
+    end
+    exports.mongodb:findOne({ collection="society_infos", query = { name = society } }, function (success, result)
+        if not success then
+            print("[MongoDB][Example] Error in findOne: "..tostring(result))
+            return
+        end
+        if not result[1] then
+            print("ERREUR Sociéter invalid")
+            return
+        end
+        cb(result[1].argent)
+    end)
+end
+
+pfw.depositMoneySociety = function(montant,society,source)
     exports.mongodb:findOne({ collection="society_infos", query = { name = society } }, function (success, result)
         if not success then
             print("[MongoDB][Example] Error in findOne: "..tostring(result))
@@ -47,6 +65,7 @@ pfw.depositMoneySociety = function(montant,society)
             return
         end
         local newMontant = result[1].argent + montant
+        TriggerClientEvent('pf:sendSocietyMoney',source,newMontant)
         exports.mongodb:updateOne({ collection="society_infos", query = { _id = result[1]._id }, update = { ["$set"] = { argent = newMontant} } })
     end)
 end
@@ -65,6 +84,8 @@ pfw.retireMoneySociety = function(montant,society,source)
             local newMontant = result[1].argent - montant
             exports.mongodb:updateOne({ collection="society_infos", query = { _id = result[1]._id }, update = { ["$set"] = { argent = newMontant} } })
             TriggerClientEvent("pf:showNotificattion",source,("Vous avez retirer %s $ de votre entreprise"):format(montant))
+            TriggerClientEvent('pf:sendSocietyMoney',source,newMontant)
+
         else
             TriggerClientEvent("pf:showNotificattion",source,"fond inssufisant")
         end

@@ -11,6 +11,10 @@ pfw.showNotification = function(msg)
     DrawNotification(0,1)
 end
 
+pfw.round = function(x)
+    return x>=0 and math.floor(x+0.5) or math.ceil(x-0.5)
+end
+
 pfw.ShowHelpNotification = function(msg, thisFrame, beep, duration)
     AddTextEntry('esxHelpNotification', msg)
 

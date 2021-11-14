@@ -65,6 +65,14 @@ AddEventHandler("pf:societyRetireMoney",function(montant,society)
     pfw.retireMoneySociety(montant,society,source)
 end)
 
+RegisterNetEvent("pf:getSocietyMoney")
+AddEventHandler("pf:getSocietyMoney",function(society)
+    local source = source
+    pfw.getSocietyMoney(society,function(money)
+        TriggerClientEvent('pf:sendSocietyMoney',source,money)
+    end)
+end)
+
 RegisterNetEvent("pf:societyDepositMoney")
 AddEventHandler("pf:societyDepositMoney",function(montant,society)
     local source = source
@@ -83,7 +91,7 @@ AddEventHandler("pf:societyDepositMoney",function(montant,society)
     end)
     pfw.getMoney(source,function(money)
         if tonumber(money) >= tonumber(montant) then
-            pfw.depositMoneySociety(montant,society)
+            pfw.depositMoneySociety(montant,society,source)
             TriggerClientEvent("pf:showNotificattion",source,("Vous avez deposer %s $ dans votre entreprise"):format(montant))
             pfw.removeMoney(source,montant)
         end
