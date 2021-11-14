@@ -40,6 +40,7 @@ server_script {
     "server/player/inventory.lua",
     "server/player/money.lua",
     "server/player/jobs.lua",
+    "server/society/society.lua"
 
 
 }

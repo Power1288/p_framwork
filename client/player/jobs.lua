@@ -14,3 +14,5 @@ AddEventHandler('onResourceStart', function(resourceName)
     TriggerServerEvent("GetGangUser")
 end)
 
+
+

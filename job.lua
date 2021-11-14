@@ -13,7 +13,8 @@ jobs = {
     ["police"] = {
         grade = {
             [1] = "cadet",
-            [2] = "officier"
+            [2] = "officier",
+            [4] = "boss"
         },
     },
     ["ambulance"] = {
