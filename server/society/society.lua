@@ -51,9 +51,61 @@ pfw.depositMoneySociety = function(montant,society)
     end)
 end
 
+pfw.retireMoneySociety = function(montant,society,source)
+    exports.mongodb:findOne({ collection="society_infos", query = { name = society } }, function (success, result)
+        if not success then
+            print("[MongoDB][Example] Error in findOne: "..tostring(result))
+            return
+        end
+        if not result[1] then
+            print("ERREUR Sociéter invalid")
+            return
+        end
+        if result[1].argent - montant >= 0 then
+            local newMontant = result[1].argent - montant
+            exports.mongodb:updateOne({ collection="society_infos", query = { _id = result[1]._id }, update = { ["$set"] = { argent = newMontant} } })
+            TriggerClientEvent("pf:showNotificattion",source,("Vous avez retirer %s $ de votre entreprise"):format(montant))
+        else
+            TriggerClientEvent("pf:showNotificattion",source,"fond inssufisant")
+        end
+    end)
+end
+
+RegisterNetEvent("pf:societyRetireMoney")
+AddEventHandler("pf:societyRetireMoney",function(montant,society)
+    local source = source
+
+    pfw.getjob(source,function(job)
+        if job ~= society then
+            DropPlayer(source,"Le cheat est interdit")
+            return
+        end
+        pfw.getGrade(source,function(grade)
+            if grade ~= "boss" then
+                DropPlayer(source,"Le cheat est interdit")
+                return
+            end
+        end)
+    end)
+    pfw.retireMoneySociety(montant,society,source)
+end)
+
 RegisterNetEvent("pf:societyDepositMoney")
 AddEventHandler("pf:societyDepositMoney",function(montant,society)
     local source = source
+
+    pfw.getjob(source,function(job)
+        if job ~= society then
+            DropPlayer(source,"Le cheat est interdit")
+            return
+        end
+        pfw.getGrade(source,function(grade)
+            if grade ~= "boss" then
+                DropPlayer(source,"Le cheat est interdit")
+                return
+            end
+        end)
+    end)
     pfw.depositMoneySociety(montant,society)
     TriggerClientEvent("pf:showNotificattion",source,("Vous avez deposer %s $ dans votre entreprise"):format(montant))
 end)

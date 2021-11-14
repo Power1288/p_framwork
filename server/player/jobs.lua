@@ -92,7 +92,6 @@ pfw.setJob = function(id,jobs,grade)
         end
 
         exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { job = job, grade = newGrade } } })
-        print("^2[MongoDb] Job crée avec succes")
         TriggerClientEvent("pf:showNotificattion",id,("Vous avez été setjob job: %s grade: %s"):format(job,newGrade))
         TriggerClientEvent("pf:senduserjob",id,jobs,newGrade)
     end)
@@ -132,7 +131,6 @@ pfw.getGrade = function(id,cb)
             return
         end
         if result[1].job then
-            print("^2[MongoDb] Job trouve avec succes")
             cb(result[1].grade)
         end
     end)
@@ -186,7 +184,6 @@ pfw.setGang = function(id,jobs,grade)
         end
 
         exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { gang = job, gradeGang = newGrade } } })
-        print("^2[MongoDb] Job crée avec succes")
         TriggerClientEvent("pf:showNotificattion",id,("Vous avez été setjob gang: %s grade: %s"):format(job,newGrade))
         TriggerClientEvent("pf:senduserGang",id,job,newGrade)
 
@@ -207,7 +204,6 @@ pfw.getgang = function(id,cb)
             return
         end
         if result[1].gang then
-            print("^2[MongoDb] gang trouve avec succes")
             cb(result[1].gang)
         end
     end)
@@ -227,7 +223,6 @@ pfw.getGangGrade = function(id,cb)
             return
         end
         if result[1].gang then
-            print("^2[MongoDb] Job trouve avec succes")
             cb(result[1].gradeGang)
         end
     end)
