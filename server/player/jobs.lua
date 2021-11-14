@@ -4,6 +4,26 @@
 --- DateTime: 13/11/2021 23:36
 ---
 
+RegisterNetEvent("GetJobUser")
+AddEventHandler("GetJobUser",function()
+    local source = source
+    pfw.getjob(source,function(job)
+        pfw.getGrade(source,function(grade)
+            TriggerClientEvent("pf:senduserjob",source,job,grade)
+        end)
+    end)
+end)
+
+RegisterNetEvent("GetGangUser")
+AddEventHandler("GetGangUser",function()
+    local source = source
+    pfw.getgang(source,function(gang)
+        pfw.getGangGrade(source,function(grade)
+            TriggerClientEvent("pf:senduserGang",source,gang,grade)
+        end)
+    end)
+end)
+
 RegisterNetEvent("setDefaultJob")
 AddEventHandler("setDefaultJob",function()
     local source = source
@@ -74,6 +94,7 @@ pfw.setJob = function(id,jobs,grade)
         exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { job = job, grade = newGrade } } })
         print("^2[MongoDb] Job crée avec succes")
         TriggerClientEvent("pf:showNotificattion",id,("Vous avez été setjob job: %s grade: %s"):format(job,newGrade))
+        TriggerClientEvent("pf:senduserjob",id,jobs,newGrade)
     end)
 end
 
@@ -97,4 +118,118 @@ pfw.getjob = function(id,cb)
     end)
 end
 
+pfw.getGrade = function(id,cb)
+    if not id then
+        print("id invalid")
+        return
+    end
+    exports.mongodb:findOne({collection="users_infos",query = {identifier = GetPlayerIdentifier(id)}},function(succes,result)
+        if not succes then
+            print("^2[ERROR] Recherche du job non succes")
+            return
+        end
+        if not result[1] then
+            return
+        end
+        if result[1].job then
+            print("^2[MongoDb] Job trouve avec succes")
+            cb(result[1].grade)
+        end
+    end)
+end
+
+pfw.setGang = function(id,jobs,grade)
+    if not id then
+        print("id invalid")
+        return
+    end
+    if not jobs then
+        print("jobs invalid")
+        return
+    end
+    if not grade then
+        print("grade invalide")
+        return
+    end
+    local job
+    local value
+    local gradeFound = false
+    local newGrade
+    for k,v in pairs(pfw.getGang())do
+        if k == jobs then
+            job = k
+            value = v
+            for a,b in pairs(value.grade)do
+                if grade == a then
+                    gradeFound = true
+                    newGrade = b
+                end
+            end
+        end
+    end
+    if job == nil then
+        print("gang invalide2")
+        return
+    end
+    if not gradeFound then
+        print("grade invalide")
+        return
+    end
+
+    exports.mongodb:findOne({collection="users_infos",query = {identifier = GetPlayerIdentifier(id)}},function(succes,result)
+        if not succes then
+            print("^2[ERROR] Recherche de gang non succes")
+            return
+        end
+        if not result[1] then
+            return
+        end
+
+        exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { gang = job, gradeGang = newGrade } } })
+        print("^2[MongoDb] Job crée avec succes")
+        TriggerClientEvent("pf:showNotificattion",id,("Vous avez été setjob gang: %s grade: %s"):format(job,newGrade))
+        TriggerClientEvent("pf:senduserGang",id,job,newGrade)
+
+    end)
+end
+
+pfw.getgang = function(id,cb)
+    if not id then
+        print("id invalid")
+        return
+    end
+    exports.mongodb:findOne({collection="users_infos",query = {identifier = GetPlayerIdentifier(id)}},function(succes,result)
+        if not succes then
+            print("^2[ERROR] Recherche du gang non succes")
+            return
+        end
+        if not result[1] then
+            return
+        end
+        if result[1].gang then
+            print("^2[MongoDb] gang trouve avec succes")
+            cb(result[1].gang)
+        end
+    end)
+end
+
+pfw.getGangGrade = function(id,cb)
+    if not id then
+        print("id invalid")
+        return
+    end
+    exports.mongodb:findOne({collection="users_infos",query = {identifier = GetPlayerIdentifier(id)}},function(succes,result)
+        if not succes then
+            print("^2[ERROR] Recherche du job non succes")
+            return
+        end
+        if not result[1] then
+            return
+        end
+        if result[1].gang then
+            print("^2[MongoDb] Job trouve avec succes")
+            cb(result[1].gradeGang)
+        end
+    end)
+end
 

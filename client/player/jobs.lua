@@ -10,5 +10,7 @@ AddEventHandler('onResourceStart', function(resourceName)
         return
     end
     TriggerServerEvent("setDefaultJob")
+    TriggerServerEvent("GetJobUser")
+    TriggerServerEvent("GetGangUser")
 end)
 

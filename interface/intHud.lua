@@ -20,3 +20,22 @@ AddEventHandler("pf:SendInfoMoneyçbank",function(money)
         value = money
     }))
 end)
+
+RegisterNetEvent("pf:senduserjob")
+AddEventHandler("pf:senduserjob",function(job,grade)
+    SendNuiMessage(json.encode({
+        type = "setJob",
+        value = job,
+        grd = grade
+    }))
+end)
+
+RegisterNetEvent("pf:senduserGang")
+AddEventHandler("pf:senduserGang",function(gang,grade)
+    SendNuiMessage(json.encode({
+        type = "setGang",
+        value = gang,
+        grd = grade
+    }))
+
+end)

@@ -204,4 +204,56 @@ RegisterCommand("setjob",function(source,args,rawCommand)
     end)
 end)
 
+RegisterCommand("setgang",function(source,args,rawCommand)
+    pfw.isAdmin(source,function(admin)
+        if not admin then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous n'etes pas staff")
+            return
+        end
+        if not args[1] then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous definir un id")
+            return
+        end
+        if type(tonumber(args[1])) ~= "number" then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous definir un chiffre")
+            return
+        end
+        if not args[2] then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous definir un job")
+            return
+        end
+        if not args[3] then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous definir un grade")
+            return
+        end
+        if type(tonumber(args[3])) ~= "number" then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous definir un chiffre")
+            return
+        end
+        local job
+        local value
+        local gradeFound = false
+        for k,v in pairs(pfw.getGang())do
+            if k == args[2] then
+                job = k
+                value = v
+                for a,b in pairs(value.grade)do
+                    if tonumber(args[3]) == a then
+                        gradeFound = true
+                    end
+                end
+            end
+        end
+        if job == nil then
+            TriggerClientEvent("pf:showNotificattion",source,"gang invalid")
+            return
+        end
+        if not gradeFound then
+            TriggerClientEvent("pf:showNotificattion",source,"grade invalide")
+            return
+        end
+        pfw.setGang(tonumber(args[1]),args[2],tonumber(args[3]))
+    end)
+end)
+
 

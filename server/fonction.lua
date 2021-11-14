@@ -15,6 +15,10 @@ pfw.getJob = function()
     return jobs
 end
 
+pfw.getGang = function()
+    return Gangs
+end
+
 pfw.isAdmin = function(id,cb)
     local admin = false
     exports.mongodb:findOne({ collection="users", query = { identifier = GetPlayerIdentifier(id) } }, function (success, result)

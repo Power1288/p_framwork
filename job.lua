@@ -23,3 +23,12 @@ jobs = {
         }
     }
 }
+
+Gangs = {
+    ['ballas'] = {
+        grade = {
+            [1] = "solda",
+            [2] = "capo"
+        }
+    }
+}
