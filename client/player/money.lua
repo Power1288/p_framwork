@@ -5,7 +5,7 @@
 ---
 
 AddEventHandler("playerSpawned",function()
-    TriggerServerEvent('pf:setinfomoney')
+
 
 end)
 
@@ -14,5 +14,6 @@ AddEventHandler('onClientResourceStart', function (resourceName)
         return
     end
     TriggerServerEvent("pf:getMoneyInfo")
+    TriggerServerEvent('pf:setinfousers')
 end)
 

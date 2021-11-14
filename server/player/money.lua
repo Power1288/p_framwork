@@ -4,44 +4,6 @@
 --- DateTime: 13/11/2021 16:25
 ---
 
-RegisterNetEvent("pf:setinfomoney")
-AddEventHandler("pf:setinfomoney",function()
-    local source = source
-    exports.mongodb:findOne({ collection="users_infos", query = { identifier = GetPlayerIdentifier(source) } }, function (success, result)
-        if not success then
-            print("[MongoDB][Example] Error de recherche infos users: "..tostring(result))
-            return
-        end
-        if not result[1] then
-            print("[utilisateur] introuvable")
-            exports.mongodb:insertOne({ collection="users_infos", document = { identifier = GetPlayerIdentifier(source) , money = config.startInCash ,moneyBank = config.startInBang} }, function (success, result, insertedIds)
-                if not success then
-                    print("[MongoDB][Example] Error in insertOne: "..tostring(result))
-                    return
-                end
-                print("[MongoDB][Portefeuille crée])"..tostring(insertedIds[1]))
-            end)
-        end
-    end)
-end)
-
-RegisterNetEvent("pf:getMoneyInfo")
-AddEventHandler("pf:getMoneyInfo",function()
-    local source = source
-    exports.mongodb:findOne({ collection="users_infos", query = { identifier = GetPlayerIdentifier(source) } }, function (success, result)
-        if not success then
-            print("[MongoDB][Example] Error de recherche infos users: "..tostring(result))
-            return
-        end
-        if not result[1] then
-            print("[utilisateur] introuvable")
-           return
-        end
-        print(type(result[1].money))
-        TriggerClientEvent("pf:SendInfoMoney",source,result[1].money)
-        TriggerClientEvent("pf:SendInfoMoneyçbank",source,result[1].moneyBank)
-    end)
-end)
 
 pfw.getMoney = function(id,cb)
     exports.mongodb:findOne({ collection="users_infos", query = { identifier = GetPlayerIdentifier(id) } }, function (success, result)
@@ -117,7 +79,7 @@ pfw.removeMoney = function(id,montant)
             print("[utilisateur] introuvable")
             return
         end
-        if result[1].money >= montant then
+        if tonumber(result[1].money) >= tonumber(montant) then
             local newMontant = result[1].money - montant
             exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { money = newMontant } } })
             TriggerClientEvent("pf:SendInfoMoney",id,newMontant)

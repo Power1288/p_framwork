@@ -6,6 +6,6 @@
 
 config = {
     startInCash = 7000,
-    startInBang = 15000,
+    startInBank = 15000,
 
 }

@@ -71,41 +71,5 @@ pfw.retireMoneySociety = function(montant,society,source)
     end)
 end
 
-RegisterNetEvent("pf:societyRetireMoney")
-AddEventHandler("pf:societyRetireMoney",function(montant,society)
-    local source = source
 
-    pfw.getjob(source,function(job)
-        if job ~= society then
-            DropPlayer(source,"Le cheat est interdit")
-            return
-        end
-        pfw.getGrade(source,function(grade)
-            if grade ~= "boss" then
-                DropPlayer(source,"Le cheat est interdit")
-                return
-            end
-        end)
-    end)
-    pfw.retireMoneySociety(montant,society,source)
-end)
 
-RegisterNetEvent("pf:societyDepositMoney")
-AddEventHandler("pf:societyDepositMoney",function(montant,society)
-    local source = source
-
-    pfw.getjob(source,function(job)
-        if job ~= society then
-            DropPlayer(source,"Le cheat est interdit")
-            return
-        end
-        pfw.getGrade(source,function(grade)
-            if grade ~= "boss" then
-                DropPlayer(source,"Le cheat est interdit")
-                return
-            end
-        end)
-    end)
-    pfw.depositMoneySociety(montant,society)
-    TriggerClientEvent("pf:showNotificattion",source,("Vous avez deposer %s $ dans votre entreprise"):format(montant))
-end)

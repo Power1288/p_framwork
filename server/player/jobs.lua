@@ -4,44 +4,7 @@
 --- DateTime: 13/11/2021 23:36
 ---
 
-RegisterNetEvent("GetJobUser")
-AddEventHandler("GetJobUser",function()
-    local source = source
-    pfw.getjob(source,function(job)
-        pfw.getGrade(source,function(grade)
-            TriggerClientEvent("pf:senduserjob",source,job,grade)
-        end)
-    end)
-end)
 
-RegisterNetEvent("GetGangUser")
-AddEventHandler("GetGangUser",function()
-    local source = source
-    pfw.getgang(source,function(gang)
-        pfw.getGangGrade(source,function(grade)
-            TriggerClientEvent("pf:senduserGang",source,gang,grade)
-        end)
-    end)
-end)
-
-RegisterNetEvent("setDefaultJob")
-AddEventHandler("setDefaultJob",function()
-    local source = source
-    exports.mongodb:findOne({collection="users_infos",query = {identifier = GetPlayerIdentifier(source)}},function(succes,result)
-        if not succes then
-            print("^2[ERROR] Recherche du job non succes")
-            return
-        end
-        if not result[1] then
-            return
-        end
-        if result[1].job then
-            return
-        end
-        exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { job = "unemployed", grade = 0 } } })
-        print("^2[MongoDb] Job crée avec succes")
-    end)
-end)
 
 
 pfw.setJob = function(id,jobs,grade)
@@ -226,5 +189,9 @@ pfw.getGangGrade = function(id,cb)
             cb(result[1].gradeGang)
         end
     end)
+end
+
+pfw.getEmployer = function(society)
+
 end
 
