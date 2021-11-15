@@ -14,7 +14,7 @@ jobs = {
         grade = {
             [1] = "cadet",
             [2] = "officier",
-            [4] = "boss"
+            [3] = "boss"
         },
     },
     ["ambulance"] = {

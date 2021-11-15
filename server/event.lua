@@ -145,7 +145,22 @@ end)
 RegisterNetEvent("pf:getEnployerSociety")
 AddEventHandler("pf:getEnployerSociety",function(society)
     local source = source
-    pfw.getEmployer(society,function(employer)
-        TriggerClientEvent("pf:sendSocietyEmployer",source,employer)
-    end)
+    pfw.getEmployer(society,source)
+end)
+
+RegisterNetEvent("pf:removeEmployerSociety")
+AddEventHandler("pf:removeEmployerSociety",function(society,playername)
+    local source = source
+    pfw.removeEmployer(society,playername,source)
+end)
+
+RegisterNetEvent("pf:getGradeSociety")
+AddEventHandler("pf:getGradeSociety",function(society)
+    local gradeJobs =  pfw.getGradeJob(society)
+    TriggerClientEvent("pf:sendGradeJob",source,gradeJobs)
+end)
+
+RegisterNetEvent("pf:changeGradeEmploye")
+AddEventHandler("pf:changeGradeEmploye",function(society,employer,newGrade)
+    pfw.changeGradeEmployer(society,employer,newGrade,source)
 end)

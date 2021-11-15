@@ -94,7 +94,63 @@ pfw.retireMoneySociety = function(montant,society,source)
     end)
 end
 
-pfw.getEmployer = function(society,cb)
+
+pfw.removeEmployer = function(society, namePlayer,source)
+    pfw.getjob(source,function(job)
+        if job ~= society then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous ne pouvez pas faire cela")
+            return
+        end
+        pfw.getGrade(source,function(grade)
+            if grade ~= "boss" then
+                TriggerClientEvent("pf:showNotificattion",source,"Vous devez etre le boss pour faire cela")
+                return
+            end
+        end)
+        exports.mongodb:findOne({ collection="users_infos", query = { name = namePlayer } }, function (success, result)
+            if not success then
+                print("[MongoDB][Example] Error in findOne: "..tostring(result))
+                return
+            end
+            if not result[1] then
+                print("ERREUR survenue invalid")
+                return
+            end
+            exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = { job = "unemployed",grade = "sans-emplois"} } })
+            TriggerClientEvent("pf:showNotificattion",source,("Vous avez viter %s avec succes"):format(namePlayer))
+            pfw.getEmployer(society,source)
+        end)
+    end)
+end
+
+pfw.changeGradeEmployer = function(society,employer,newgrade,source)
+    pfw.getjob(source,function(job)
+        if job ~= society then
+            TriggerClientEvent("pf:showNotificattion",source,"Vous ne pouvez pas faire cela")
+            return
+        end
+        pfw.getGrade(source,function(grade)
+            if grade ~= "boss" then
+                TriggerClientEvent("pf:showNotificattion",source,"Vous devez etre le boss pour faire cela")
+                return
+            end
+        end)
+        exports.mongodb:findOne({ collection="users_infos", query = { name = employer } }, function (success, result)
+            if not success then
+                print("[MongoDB][Example] Error in findOne: "..tostring(result))
+                return
+            end
+            if not result[1] then
+                print("ERREUR survenue invalid")
+                return
+            end
+            exports.mongodb:updateOne({ collection="users_infos", query = { _id = result[1]._id }, update = { ["$set"] = {grade = newgrade} } })
+            TriggerClientEvent("pf:showNotificattion",source,("Vous avez mis a jour le grade %s avec succes"):format(employer))
+            pfw.getEmployer(society,source)
+        end)
+    end)
+end
+pfw.getEmployer = function(society,source)
     local employer = {}
     if not society then
         print("ERREUR SOCIETER Invalide")
@@ -112,7 +168,25 @@ pfw.getEmployer = function(society,cb)
         for k,v in pairs(result) do
             table.insert(employer,{name = v.name , grade = v.grade})
         end
-        cb(employer)
+        TriggerClientEvent("pf:sendSocietyEmployer",source,employer)
     end)
+end
+
+pfw.getGradeJob = function(society)
+   local job = pfw.getJob()
+    local grade
+    local gradeFound = false
+    for k,v in pairs(job) do
+        if k == society then
+            gradeFound = true
+            grade = v
+        end
+    end
+    if gradeFound then
+        for k,v in pairs(grade)do
+            return v
+        end
+    end
+
 end
 
