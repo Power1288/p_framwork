@@ -28,7 +28,7 @@ jobs = {
 Gangs = {
     ['ballas'] = {
         grade = {
-            [1] = "solda",
+            [1] = "soldat",
             [2] = "capo"
         }
     }

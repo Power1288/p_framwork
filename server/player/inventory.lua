@@ -21,6 +21,8 @@ function pfw.getInventory(id,cb)
     end)
 end
 
+
+
 function pfw.addItem(id,itemName,count)
     if not id then
         print("ERREUR ID invalid Inventaire")
@@ -37,6 +39,8 @@ function pfw.addItem(id,itemName,count)
     local itemInventory = {}
     local items = pfw.getItem()
     local item
+    local weight = 0
+    local addAuto = false
     for k, v in pairs(items) do
         if v.name == itemName then
             item = v
@@ -52,7 +56,13 @@ function pfw.addItem(id,itemName,count)
             return
         end
         if not result[1] then
-            table.insert(itemInventory,{name = item.name,label = item.label , weight = item.weight, usable = item.usable ,count = count})
+            if item.weight * count <= config.inventory.maxWeight then
+                table.insert(itemInventory,{name = item.name,label = item.label , weight = item.weight * count, usable = item.usable ,count = count})
+            else
+                TriggerClientEvent("pf:showNotificattion",id,"espace inssufisant")
+                return
+            end
+
             exports.mongodb:insertOne({ collection="users_inventory", document = {identifier = GetPlayerIdentifier(id), item = itemInventory } }, function (success, result, insertedIds)
                 if not success then
                     print("[MongoDB][Example] Error in insertOne: "..tostring(result))
@@ -63,10 +73,26 @@ function pfw.addItem(id,itemName,count)
             return
         end
         local itemInv = result[1].item
+        for _,value in pairs(itemInv)do
+            weight = weight + value.weight
+        end
+        if weight + pfw.getWeight(itemName) * count > config.inventory.maxWeight then
+            TriggerClientEvent("pf:showNotificattion",id,"Place dans votre inventaire inssufissante")
+            return
+        end
+        addAuto = true
+
+        if not addAuto then
+            TriggerClientEvent("pf:showNotificattion",id,"Place dans votre inventaire inssufissante")
+            return
+        end
+
         for a,b in pairs(itemInv)do
             if b.name == itemName then
+                b.weight = b.weight + pfw.getWeight(itemName) * count
                 b.count = b.count + count
                 exports.mongodb:updateOne({ collection="users_inventory", query = { identifier = GetPlayerIdentifier(id)}, update = { ["$set"] = { item = itemInv } } })
+                print(weight)
                 return
             end
         end
@@ -75,7 +101,17 @@ function pfw.addItem(id,itemName,count)
         end
         table.insert(itemTable,{name = item.name,label = item.label , weight = item.weight, usable = item.usable ,count = count})
         exports.mongodb:updateOne({ collection="users_inventory", query = { identifier = GetPlayerIdentifier(id)}, update = { ["$set"] = { item = itemTable } } })
+
     end)
+end
+
+function pfw.getWeight(itemName)
+    local items = pfw.getItem()
+    for k,v in pairs(items)do
+        if itemName == v.name then
+            return v.weight
+        end
+    end
 end
 
 function pfw.removeItem(id,itemName,count)

@@ -7,5 +7,8 @@
 config = {
     startInCash = 7000,
     startInBank = 15000,
+    inventory = {
+        maxWeight = 20
+    }
 
 }

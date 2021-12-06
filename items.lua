@@ -5,6 +5,6 @@
 ---
 
 Item = {
-    {name = "bread",label = "pain", weight = 1.0, usable = true },
-    {name = "water",label = "eau",weight = 1.5 , usable = true}
+    {name = "bread",label = "pain", weight = 1, usable = true },
+    {name = "water",label = "eau",weight = 1 , usable = true}
 }
