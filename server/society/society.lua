@@ -187,6 +187,5 @@ pfw.getGradeJob = function(society)
             return v
         end
     end
-
 end
 

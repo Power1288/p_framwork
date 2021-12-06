@@ -6,7 +6,17 @@
 
 pfw = {}
 
-
+pfw.registerGetServer = function(nameFunction,callback)
+    RegisterNetEvent(nameFunction)
+    AddEventHandler(nameFunction, function(id, ...)
+        print("recu")
+        local src = source;
+        local cb = function(args)
+            TriggerClientEvent(nameFunction,src, id, args);
+        end;
+        callback(cb, src, ...);
+    end);
+end
 pfw.getItem = function()
     return Item
 end

@@ -5,6 +5,26 @@
 ---
 
 pfw = {}
+
+pfw.baseTriggerEvent = {}
+currentId = 0
+
+pfw.getToServer = function(nameFunction,callback,...)
+    print("test1")
+    pfw.baseTriggerEvent[currentId] = callback
+    TriggerServerEvent(nameFunction,currentId,...)
+    RegisterNetEvent(nameFunction)
+    AddEventHandler(nameFunction,function(currentId,...)
+        print("test2")
+        pfw.baseTriggerEvent[currentId](...)
+    end);
+    if currentId < 65535 then
+        currentId = currentId + 1
+    else
+        currentId = 0
+    end
+end
+
 pfw.showNotification = function(msg)
     SetNotificationTextEntry('STRING')
     AddTextComponentString(msg)
@@ -56,25 +76,19 @@ pfw.spawVehicule = function(vehicle, coords, heading, cb)
         while not HasModelLoaded(model)do
             Wait(1)
         end
-
         local vehicle = CreateVehicle(model, vector.xyz, heading, false, false)
-
-
         SetVehicleHasBeenOwnedByPlayer(vehicle, true)
         SetVehicleNeedsToBeHotwired(vehicle, false)
         SetModelAsNoLongerNeeded(model)
         SetVehRadioStation(vehicle, 'OFF')
-
         RequestCollisionAtCoord(vector.xyz)
         while not HasCollisionLoadedAroundEntity(vehicle) do
             Citizen.Wait(0)
         end
-
         if cb then
             cb(vehicle)
         end
     end)
-
 end
 
 RegisterNetEvent("pf:showNotificattion")
